@@ -1,0 +1,13 @@
+flowchart LR
+    HOME[首页/入口\n开始对弈\n摆放局面\n最近对局]
+    GAME[核心对弈页\n棋盘、难度、评价\n候选着法、解释]
+    REVIEW[复盘结果页\n关键节点、建议\n导出摘要]
+    SETTINGS[设置/帮助\n引擎状态、隐私]
+    HOME -->|开始对弈| GAME
+    HOME -->|打开历史| REVIEW
+    HOME -->|设置| SETTINGS
+    GAME -->|结束对局| REVIEW
+    GAME -->|返回| HOME
+    REVIEW -->|再次练习| GAME
+    REVIEW -->|返回首页| HOME
+    SETTINGS -->|返回| HOME

@@ -1,0 +1,38 @@
+erDiagram
+    GAME ||--o{ MOVE : contains
+    GAME ||--o{ ANALYSIS_POINT : produces
+    GAME ||--o| REVIEW_SUMMARY : has
+    MOVE ||--o| ANALYSIS_POINT : marks
+    GAME {
+        string game_id PK
+        string side
+        string difficulty
+        datetime started_at
+        datetime ended_at
+        string status
+    }
+    MOVE {
+        string move_id PK
+        string game_id FK
+        int ply
+        string from_square
+        string to_square
+        string notation
+        boolean legal
+    }
+    ANALYSIS_POINT {
+        string point_id PK
+        string game_id FK
+        string move_id FK
+        float evaluation
+        string best_move
+        string label
+        boolean human_review_required
+    }
+    REVIEW_SUMMARY {
+        string review_id PK
+        string game_id FK
+        string key_points_json
+        string practice_advice
+        datetime created_at
+    }

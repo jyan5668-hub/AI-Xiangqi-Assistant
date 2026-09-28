@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800">
+  <rect width="1200" height="800" fill="#f5f7fa"/>
+  <rect width="1200" height="66" fill="#183b56"/>
+  <text x="38" y="43" fill="#ffffff" font-size="24" font-family="Microsoft YaHei, SimHei">AI象棋对弈助手</text>
+  <text x="990" y="42" fill="#d7e8f2" font-size="16" font-family="Microsoft YaHei, SimHei">首页　帮助</text>
+  <text x="45" y="112" fill="#183b56" font-size="25" font-family="Microsoft YaHei, SimHei">人机对弈</text>
+  <text x="45" y="145" fill="#63737c" font-size="15" font-family="Microsoft YaHei, SimHei">红方 · 标准难度 · 本地引擎</text>
+  <rect x="45" y="180" width="570" height="570" fill="#e4c28f" stroke="#8c633f" stroke-width="3"/>
+  <g stroke="#8c633f" stroke-width="2">
+    <line x1="74" y1="212" x2="586" y2="212"/><line x1="74" y1="276" x2="586" y2="276"/><line x1="74" y1="340" x2="586" y2="340"/><line x1="74" y1="404" x2="586" y2="404"/><line x1="74" y1="468" x2="586" y2="468"/><line x1="74" y1="532" x2="586" y2="532"/><line x1="74" y1="596" x2="586" y2="596"/><line x1="74" y1="660" x2="586" y2="660"/><line x1="74" y1="724" x2="586" y2="724"/>
+    <line x1="74" y1="212" x2="74" y2="724"/><line x1="138" y1="212" x2="138" y2="724"/><line x1="202" y1="212" x2="202" y2="724"/><line x1="266" y1="212" x2="266" y2="724"/><line x1="330" y1="212" x2="330" y2="724"/><line x1="394" y1="212" x2="394" y2="724"/><line x1="458" y1="212" x2="458" y2="724"/><line x1="522" y1="212" x2="522" y2="724"/><line x1="586" y1="212" x2="586" y2="724"/>
+  </g>
+  <line x1="74" y1="468" x2="586" y2="468" stroke="#8c633f" stroke-width="5"/>
+  <text x="267" y="460" fill="#8c633f" font-size="20" font-family="Microsoft YaHei, SimHei">楚河　　　汉界</text>
+  <g font-size="29" font-family="Microsoft YaHei, SimHei" text-anchor="middle">
+    <circle cx="138" cy="212" r="23" fill="#fafafa" stroke="#8c633f"/><text x="138" y="222" fill="#b3382d">車</text>
+    <circle cx="266" cy="212" r="23" fill="#fafafa" stroke="#8c633f"/><text x="266" y="222" fill="#b3382d">馬</text>
+    <circle cx="394" cy="212" r="23" fill="#fafafa" stroke="#8c633f"/><text x="394" y="222" fill="#b3382d">相</text>
+    <circle cx="522" cy="724" r="23" fill="#333" stroke="#111"/><text x="522" y="734" fill="#fff">将</text>
+    <circle cx="458" cy="660" r="23" fill="#333" stroke="#111"/><text x="458" y="670" fill="#fff">卒</text>
+  </g>
+  <rect x="660" y="180" width="495" height="130" fill="#ffffff" stroke="#ccd8df"/>
+  <text x="690" y="220" fill="#183b56" font-size="19" font-family="Microsoft YaHei, SimHei">当前状态</text>
+  <text x="690" y="260" fill="#2d7898" font-size="18" font-family="Microsoft YaHei, SimHei">轮到红方 · AI 已就绪</text>
+  <text x="690" y="290" fill="#63737c" font-size="15" font-family="Microsoft YaHei, SimHei">最近一步：炮二平五　评价：+0.32</text>
+  <rect x="660" y="335" width="495" height="175" fill="#ffffff" stroke="#ccd8df"/>
+  <text x="690" y="375" fill="#183b56" font-size="19" font-family="Microsoft YaHei, SimHei">候选着法</text>
+  <text x="690" y="415" fill="#263e4b" font-size="16" font-family="Microsoft YaHei, SimHei">1. 马八进七　+0.35</text>
+  <text x="690" y="450" fill="#263e4b" font-size="16" font-family="Microsoft YaHei, SimHei">2. 车一平二　+0.18</text>
+  <text x="690" y="485" fill="#263e4b" font-size="16" font-family="Microsoft YaHei, SimHei">3. 炮八平五　+0.10</text>
+  <rect x="660" y="535" width="495" height="120" fill="#eaf4f7" stroke="#8db7c8"/>
+  <text x="690" y="575" fill="#183b56" font-size="19" font-family="Microsoft YaHei, SimHei">简短解释</text>
+  <text x="690" y="612" fill="#45616e" font-size="16" font-family="Microsoft YaHei, SimHei">先发展马并保护中兵，避免黑方连续将军。</text>
+  <text x="690" y="640" fill="#6d7b83" font-size="14" font-family="Microsoft YaHei, SimHei">不确定局面将标记“需要人工确认”。</text>
+  <rect x="660" y="682" width="140" height="40" rx="4" fill="#2d7898"/><text x="700" y="708" fill="#fff" font-size="16" font-family="Microsoft YaHei, SimHei">结束对局</text>
+  <rect x="820" y="682" width="140" height="40" rx="4" fill="#fff" stroke="#2d7898"/><text x="860" y="708" fill="#2d7898" font-size="16" font-family="Microsoft YaHei, SimHei">悔棋</text>
+</svg>

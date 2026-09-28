@@ -1,0 +1,15 @@
+flowchart TB
+    UI[界面层\n首页 / 对弈页 / 复盘页]
+    APP[应用服务层\n对局编排 / 状态管理 / 错误处理]
+    DOMAIN[领域层\n棋盘模型 / 规则校验 / 评价节点]
+    PORTS[端口与适配器\nEngineAdapter / ExplanationAdapter / FileRepository]
+    ENGINE[本地中国象棋引擎]
+    EXPLAIN[模板解释器\n可选 LLM 适配器]
+    STORE[(本地 JSON 存储)]
+    UI --> APP
+    APP --> DOMAIN
+    APP --> PORTS
+    PORTS --> ENGINE
+    PORTS --> EXPLAIN
+    PORTS --> STORE
+    DOMAIN --> STORE

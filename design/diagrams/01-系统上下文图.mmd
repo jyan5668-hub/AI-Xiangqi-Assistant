@@ -1,0 +1,13 @@
+flowchart LR
+    U[学习型象棋爱好者\n用户] -->|摆局、落子、查看复盘| APP[AI象棋对弈助手系统\n本地 Windows App]
+    APP -->|规则校验、保存棋局| RULE[规则与本地数据模块\n软件内部]
+    APP -->|请求候选着法| ENGINE[中国象棋引擎\n本地进程/外部依赖]
+    APP -->|可选发送结构化局面| LLM[可选云端 LLM\n外部服务]
+    APP -->|导入/导出| FILE[用户主动选择的棋谱文件\n外部文件系统]
+    ENGINE -->|着法、评价、主变化| APP
+    LLM -->|解释草稿| APP
+    RULE -->|合法性结果、历史记录| APP
+    classDef inside fill:#e7f3f8,stroke:#397b98,color:#17324d;
+    classDef outside fill:#f7f7f7,stroke:#7a8790,color:#333;
+    class APP,RULE inside;
+    class U,ENGINE,LLM,FILE outside;
