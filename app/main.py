@@ -42,6 +42,7 @@ class MainWindow(QMainWindow):
 
         self.current_turn = "红方"
         self.board = self.initial_board()
+        self.sides = self.initial_sides()
         self.selected = None
         self.moves = []
         self.status_label = QLabel("准备开始一局新的对弈")
@@ -82,7 +83,7 @@ class MainWindow(QMainWindow):
         title_box.addWidget(subtitle)
         layout.addLayout(title_box)
         layout.addStretch()
-        badge = QLabel("●  本地引擎就绪")
+        badge = QLabel("●  本地练习模式")
         badge.setObjectName("badge")
         layout.addWidget(badge, alignment=Qt.AlignmentFlag.AlignVCenter)
         return header
@@ -194,9 +195,39 @@ class MainWindow(QMainWindow):
             board[6][col] = "兵"
         return board
 
+    @staticmethod
+    def initial_sides():
+        sides = [[None for _ in range(9)] for _ in range(10)]
+        for row in (0, 2, 3):
+            for col, piece in enumerate(MainWindow.initial_board()[row]):
+                if piece:
+                    sides[row][col] = "黑方"
+        for row in (9, 7, 6):
+            for col, piece in enumerate(MainWindow.initial_board()[row]):
+                if piece:
+                    sides[row][col] = "红方"
+        return sides
+
+    @staticmethod
+    def infer_sides(board):
+        black_only = {"象", "士", "将", "卒"}
+        red_only = {"相", "仕", "帥", "兵"}
+        sides = [[None for _ in range(9)] for _ in range(10)]
+        for row in range(10):
+            for col in range(9):
+                piece = board[row][col]
+                if piece in black_only:
+                    sides[row][col] = "黑方"
+                elif piece in red_only:
+                    sides[row][col] = "红方"
+                elif piece:
+                    sides[row][col] = "黑方" if row < 5 else "红方"
+        return sides
+
     def start_game(self):
         self.current_turn = "红方"
         self.board = self.initial_board()
+        self.sides = self.initial_sides()
         self.selected = None
         self.moves = []
         self.turn_label.setText("红方回合")
@@ -211,6 +242,10 @@ class MainWindow(QMainWindow):
                 self.status_label.setText("当前状态：请选择一个棋子")
                 logging.warning("select empty square row=%s col=%s", row, col)
                 return
+            if self.sides[row][col] != self.current_turn:
+                self.status_label.setText(f"现在是{self.current_turn}回合，不能移动对方棋子")
+                logging.warning("move rejected wrong side turn=%s piece_side=%s", self.current_turn, self.sides[row][col])
+                return
             self.selected = (row, col)
             self.status_label.setText(f"已选择“{piece}”，请选择目标位置")
             self.refresh_board()
@@ -223,14 +258,21 @@ class MainWindow(QMainWindow):
             self.refresh_board()
             return
 
-        if piece:
+        if piece and self.sides[row][col] == self.current_turn:
             self.status_label.setText("目标位置已有棋子，请选择空位置")
             logging.warning("move rejected occupied square row=%s col=%s", row, col)
             return
 
         moving_piece = self.board[source_row][source_col]
+        side = self.sides[source_row][source_col]
+        if not self.is_legal_move(moving_piece, side, source_row, source_col, row, col):
+            self.status_label.setText(f"{moving_piece}不能这样移动，请检查走法")
+            logging.warning("move rejected by piece rule piece=%s side=%s from=%s to=%s", moving_piece, side, [source_row, source_col], [row, col])
+            return
         self.board[row][col] = moving_piece
         self.board[source_row][source_col] = ""
+        self.sides[row][col] = side
+        self.sides[source_row][source_col] = None
         self.moves.append({
             "piece": moving_piece,
             "from": [source_row, source_col],
@@ -244,6 +286,60 @@ class MainWindow(QMainWindow):
         logging.info("move piece=%s from=%s to=%s", moving_piece, [source_row, source_col], [row, col])
         self.refresh_board()
 
+    def is_legal_move(self, piece, side, sr, sc, tr, tc):
+        dr, dc = tr - sr, tc - sc
+        row_distance, col_distance = abs(dr), abs(dc)
+        target_piece = self.board[tr][tc]
+        if target_piece and self.sides[tr][tc] == side:
+            return False
+
+        def clear_path():
+            row_step = (dr > 0) - (dr < 0)
+            col_step = (dc > 0) - (dc < 0)
+            row, col = sr + row_step, sc + col_step
+            blockers = 0
+            while (row, col) != (tr, tc):
+                blockers += bool(self.board[row][col])
+                row += row_step
+                col += col_step
+            return blockers
+
+        if piece in {"兵", "卒"}:
+            forward = -1 if side == "红方" else 1
+            crossed_river = sr <= 4 if side == "红方" else sr >= 5
+            return (dc == 0 and dr == forward) or (
+                crossed_river and dr == 0 and col_distance == 1
+            )
+        if piece == "車":
+            return (dr == 0 or dc == 0) and clear_path() == 0
+        if piece == "馬":
+            if (row_distance, col_distance) not in {(1, 2), (2, 1)}:
+                return False
+            leg = (sr + (1 if dr > 0 else -1), sc) if row_distance == 2 else (sr, sc + (1 if dc > 0 else -1))
+            return not self.board[leg[0]][leg[1]]
+        if piece == "炮":
+            if not (dr == 0 or dc == 0):
+                return False
+            blockers = clear_path()
+            return blockers == (1 if target_piece else 0)
+        if piece in {"相", "象"}:
+            if row_distance != 2 or col_distance != 2:
+                return False
+            if side == "红方" and tr < 5 or side == "黑方" and tr > 4:
+                return False
+            return not self.board[(sr + tr) // 2][(sc + tc) // 2]
+        if piece in {"仕", "士"}:
+            palace_rows = range(7, 10) if side == "红方" else range(0, 3)
+            return row_distance == 1 and col_distance == 1 and tr in palace_rows and 3 <= tc <= 5
+        if piece in {"帥", "將"}:
+            palace_rows = range(7, 10) if side == "红方" else range(0, 3)
+            if tr in palace_rows and 3 <= tc <= 5 and row_distance + col_distance == 1:
+                return True
+            if dc == 0 and target_piece in {"帥", "將"}:
+                return clear_path() == 0
+            return False
+        return False
+
     def refresh_board(self):
         for row in range(10):
             for col in range(9):
@@ -256,14 +352,15 @@ class MainWindow(QMainWindow):
                     button.setStyleSheet("font-size: 20px; font-weight: bold; color: #762f25; background: #fff4d6; border: 1px solid #c9894f; border-radius: 5px;")
 
     def save_game(self):
-        DATA_DIR.mkdir(exist_ok=True)
-        game_data = {
-            "saved_at": datetime.now().isoformat(timespec="seconds"),
-            "current_turn": self.current_turn,
-            "moves": self.moves,
-            "board": self.board,
-        }
         try:
+            DATA_DIR.mkdir(exist_ok=True)
+            game_data = {
+                "saved_at": datetime.now().isoformat(timespec="seconds"),
+                "current_turn": self.current_turn,
+                "moves": self.moves,
+                "board": self.board,
+                "sides": self.sides,
+            }
             DATA_FILE.write_text(json.dumps(game_data, ensure_ascii=False, indent=2), encoding="utf-8")
             self.status_label.setText("棋局保存成功：data/games.json")
             logging.info("save game successfully moves=%s", len(self.moves))
@@ -279,17 +376,34 @@ class MainWindow(QMainWindow):
         try:
             game_data = json.loads(DATA_FILE.read_text(encoding="utf-8"))
             board = game_data["board"]
-            if len(board) != 10 or any(len(row) != 9 for row in board):
+            if (
+                not isinstance(board, list)
+                or len(board) != 10
+                or any(not isinstance(row, list) or len(row) != 9 for row in board)
+                or any(not isinstance(piece, str) for row in board for piece in row)
+            ):
                 raise ValueError("棋盘数据尺寸不正确")
+            sides = game_data.get("sides") or self.infer_sides(board)
+            if (
+                not isinstance(sides, list)
+                or len(sides) != 10
+                or any(not isinstance(row, list) or len(row) != 9 for row in sides)
+                or any(side not in {None, "红方", "黑方"} for row in sides for side in row)
+            ):
+                raise ValueError("棋子所属方数据格式不正确")
+            moves = game_data.get("moves", [])
+            if not isinstance(moves, list):
+                raise ValueError("棋步记录格式不正确")
             self.board = board
-            self.moves = game_data.get("moves", [])
+            self.sides = sides
+            self.moves = moves
             self.current_turn = game_data.get("current_turn", "红方")
             self.selected = None
             self.turn_label.setText(f"{self.current_turn}回合")
             self.status_label.setText(f"棋局读取成功：共 {len(self.moves)} 步")
             logging.info("load game successfully moves=%s", len(self.moves))
             self.refresh_board()
-        except (OSError, json.JSONDecodeError, KeyError, ValueError) as exc:
+        except (OSError, json.JSONDecodeError, KeyError, TypeError, ValueError) as exc:
             self.status_label.setText(f"读取失败：{exc}")
             logging.exception("load game failed")
 

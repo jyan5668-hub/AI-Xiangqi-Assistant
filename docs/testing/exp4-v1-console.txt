@@ -1,0 +1,26 @@
+============================= test session starts =============================
+platform win32 -- Python 3.14.5, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\yanjun\Desktop\AI-Xiangqi-Assistant\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\yanjun\Desktop\AI-Xiangqi-Assistant
+collecting ... collected 12 items
+
+tests/test_exp4_basics.py::test_TC01_startup PASSED                      [  8%]
+tests/test_exp4_basics.py::test_TC02_forward_pawn PASSED                 [ 16%]
+tests/test_exp4_basics.py::test_TC03_occupied_square PASSED              [ 25%]
+tests/test_exp4_basics.py::test_TC04_save_and_load_in_new_window PASSED  [ 33%]
+tests/test_exp4_basics.py::test_TC05_missing_file PASSED                 [ 41%]
+tests/test_exp4_basics.py::test_TC06_invalid_json PASSED                 [ 50%]
+tests/test_exp4_basics.py::test_TC07_invalid_board_size PASSED           [ 58%]
+tests/test_exp4_basics.py::test_TC08_write_permission_error PASSED       [ 66%]
+tests/test_exp4_basics.py::test_TC09_wrong_turn FAILED                   [ 75%]
+tests/test_exp4_basics.py::test_TC10_pawn_sideways_before_river FAILED   [ 83%]
+tests/test_exp4_basics.py::test_TC11_null_board FAILED                   [ 91%]
+tests/test_exp4_basics.py::test_TC12_data_directory_conflict FAILED      [100%]
+
+- generated xml file: C:\Users\yanjun\Desktop\AI-Xiangqi-Assistant\docs\testing\exp4-v1-results.xml -
+=========================== short test summary info ===========================
+FAILED tests/test_exp4_basics.py::test_TC09_wrong_turn - AssertionError: 初版...
+FAILED tests/test_exp4_basics.py::test_TC10_pawn_sideways_before_river - Asse...
+FAILED tests/test_exp4_basics.py::test_TC11_null_board - TypeError: object of...
+FAILED tests/test_exp4_basics.py::test_TC12_data_directory_conflict - FileExi...
+========================= 4 failed, 8 passed in 1.37s =========================

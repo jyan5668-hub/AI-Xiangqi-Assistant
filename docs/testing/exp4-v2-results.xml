@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuites name="pytest tests">
+  <testsuite name="pytest" errors="0" failures="0" skipped="0" tests="12" time="1.327" timestamp="2026-10-12T18:57:26.490864+08:00" hostname="DESKTOP-U8UPAB0">
+    <testcase classname="tests.test_exp4_basics" name="test_TC01_startup" time="0.050" />
+    <testcase classname="tests.test_exp4_basics" name="test_TC02_forward_pawn" time="0.030" />
+    <testcase classname="tests.test_exp4_basics" name="test_TC03_occupied_square" time="0.041" />
+    <testcase classname="tests.test_exp4_basics" name="test_TC04_save_and_load_in_new_window" time="0.117" />
+    <testcase classname="tests.test_exp4_basics" name="test_TC05_missing_file" time="0.078" />
+    <testcase classname="tests.test_exp4_basics" name="test_TC06_invalid_json" time="0.094" />
+    <testcase classname="tests.test_exp4_basics" name="test_TC07_invalid_board_size" time="0.106" />
+    <testcase classname="tests.test_exp4_basics" name="test_TC08_write_permission_error" time="0.117" />
+    <testcase classname="tests.test_exp4_basics" name="test_TC09_wrong_turn" time="0.132" />
+    <testcase classname="tests.test_exp4_basics" name="test_TC10_pawn_sideways_before_river" time="0.145" />
+    <testcase classname="tests.test_exp4_basics" name="test_TC11_null_board" time="0.162" />
+    <testcase classname="tests.test_exp4_basics" name="test_TC12_data_directory_conflict" time="0.176" />
+  </testsuite>
+</testsuites>
