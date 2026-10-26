@@ -1,0 +1,27 @@
+{
+  "question": "红兵过河前后分别怎么走？",
+  "mode": "cloud",
+  "model": "unavailable",
+  "prompt_version": "v2",
+  "top_k": 3,
+  "chunks": [
+    {
+      "chunk_id": "K-002",
+      "text": "红兵未过河时只能向前移动一格；过河后可以向前移动一格，也可以向左右横向移动一格。黑卒的方向与红兵相反。程序会根据当前回合和棋子所属方拒绝移动对方棋子。",
+      "source": "xiangqi_rules.md",
+      "heading": "兵卒移动规则",
+      "score": 7,
+      "matched_terms": [
+        "兵",
+        "红兵",
+        "过河"
+      ]
+    }
+  ],
+  "context": "[K-002] 来源=xiangqi_rules.md，标题=兵卒移动规则\n红兵未过河时只能向前移动一格；过河后可以向前移动一格，也可以向左右横向移动一格。黑卒的方向与红兵相反。程序会根据当前回合和棋子所属方拒绝移动对方棋子。",
+  "prompt": "你是 AI 象棋对弈助手的知识问答模块。\n任务要求：只根据给定资料回答；资料不足时明确说“资料不足”，不要凭空补充。\n回答格式：先给结论，再给不超过3条要点；每个事实后用 [来源: K-xxx] 标注。\n用户问题：红兵过河前后分别怎么走？\n检索资料：\n[K-002] 来源=xiangqi_rules.md，标题=兵卒移动规则\n红兵未过河时只能向前移动一格；过河后可以向前移动一格，也可以向左右横向移动一格。黑卒的方向与红兵相反。程序会根据当前回合和棋子所属方拒绝移动对方棋子。\n",
+  "answer": "",
+  "error": "缺少 LLM_API_KEY；请设置环境变量，或使用 --mode offline",
+  "elapsed_ms": 0.01
+}
+证据文件：C:\Users\yanjun\Desktop\AI-Xiangqi-Assistant\docs\evidence\exp5\failure-cloud.json

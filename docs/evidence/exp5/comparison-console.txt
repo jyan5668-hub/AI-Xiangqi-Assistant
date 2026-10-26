@@ -1,0 +1,8 @@
+固定问题数：6
+对比结果：C:\Users\yanjun\Desktop\AI-Xiangqi-Assistant\docs\evidence\exp5\comparison-offline.json
+- 棋局保存在哪里？ | direct=0.0ms | rag=0.0ms | sources=K-003
+- 红兵过河前后分别怎么走？ | direct=0.0ms | rag=0.0ms | sources=K-002
+- RAG 检索链路如何组织上下文？ | direct=0.0ms | rag=0.0ms | sources=K-004
+- 当前版本是否已经接入真实象棋引擎？ | direct=0.0ms | rag=0.0ms | sources=K-001,K-003,K-002
+- 如何修改用户的 GitHub 密码？ | direct=0.0ms | rag=0.0ms | sources=none
+- 系统能否保证每一步都是绝对最优？ | direct=0.0ms | rag=0.0ms | sources=none

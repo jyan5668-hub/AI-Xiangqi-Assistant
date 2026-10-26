@@ -1,0 +1,30 @@
+{
+  "question": "棋局保存在哪里？",
+  "mode": "offline",
+  "model": "offline-demo-v1",
+  "prompt_version": "v2",
+  "top_k": 3,
+  "chunks": [
+    {
+      "chunk_id": "K-003",
+      "text": "程序将棋局保存为本地 JSON 文件 data/games.json。保存内容包括 board 棋盘矩阵、sides 棋子所属方矩阵、current_turn 当前回合、moves 走棋记录和 saved_at 保存时间。读取文件不存在时，程序提示暂无历史对局；JSON 损坏或棋盘尺寸错误时，程序提示读取失败并保留当前棋盘。",
+      "source": "xiangqi_rules.md",
+      "heading": "棋局保存",
+      "score": 13,
+      "matched_terms": [
+        "棋局",
+        "局保",
+        "保存",
+        "存在",
+        "棋局保",
+        "局保存"
+      ]
+    }
+  ],
+  "context": "[K-003] 来源=xiangqi_rules.md，标题=棋局保存\n程序将棋局保存为本地 JSON 文件 data/games.json。保存内容包括 board 棋盘矩阵、sides 棋子所属方矩阵、current_turn 当前回合、moves 走棋记录和 saved_at 保存时间。读取文件不存在时，程序提示暂无历史对局；JSON 损坏或棋盘尺寸错误时，程序提示读取失败并保留当前棋盘。",
+  "prompt": "你是 AI 象棋对弈助手的知识问答模块。\n任务要求：只根据给定资料回答；资料不足时明确说“资料不足”，不要凭空补充。\n回答格式：先给结论，再给不超过3条要点；每个事实后用 [来源: K-xxx] 标注。\n用户问题：棋局保存在哪里？\n检索资料：\n[K-003] 来源=xiangqi_rules.md，标题=棋局保存\n程序将棋局保存为本地 JSON 文件 data/games.json。保存内容包括 board 棋盘矩阵、sides 棋子所属方矩阵、current_turn 当前回合、moves 走棋记录和 saved_at 保存时间。读取文件不存在时，程序提示暂无历史对局；JSON 损坏或棋盘尺寸错误时，程序提示读取失败并保留当前棋盘。\n",
+  "answer": "棋局使用本地 JSON 文件保存，文件名为 data/games.json。\n- 回答依据：[来源: K-003]",
+  "error": null,
+  "elapsed_ms": 0.0
+}
+证据文件：C:\Users\yanjun\Desktop\AI-Xiangqi-Assistant\docs\evidence\exp5\query-offline-v2.json
