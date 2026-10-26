@@ -4,13 +4,14 @@
 **班级：** 24级软件工程1班  
 **学号：** 24111302009  
 **姓名：** 闫俊  
-**知识库与代码版本：** V1.0（待运行截图补充）
+**知识库与代码版本：** V1.0  
+**本次云端模型：** DeepSeek `deepseek-chat`，接口返回成功，耗时约 1181.55 ms
 
 ## 一、实验目标与实现范围
 
 本实验在实验4的本地象棋练习程序基础上，增加一个面向项目知识问答的 LLM、Context 与 RAG 最小链路。问题任务对应实验2的 US-03（查看单步解释）和 US-04（对局后复盘摘要）：用户询问当前版本的规则、保存方式和 AI 能力边界，系统检索项目资料后生成带来源编号的回答。
 
-本版本提供两种模型模式：`offline` 使用可重复的本地演示模型，用于无 API Key 时验证切分、检索、上下文和引用；`cloud` 使用 OpenAI Chat Completions 兼容接口，读取 `LLM_API_KEY`、`LLM_MODEL` 和 `LLM_ENDPOINT` 环境变量，不把密钥写入代码、日志或仓库。报告中的云端调用结果必须以实际运行截图为准，当前尚待用户提供截图。
+本版本提供两种模型模式：`offline` 使用可重复的本地演示模型，用于验证切分、检索、上下文和引用；`cloud` 使用 OpenAI Chat Completions 兼容接口，读取 `LLM_API_KEY`、`LLM_MODEL` 和 `LLM_ENDPOINT` 环境变量，不把密钥写入代码、日志或仓库。本次实际云端测试使用 DeepSeek `deepseek-chat`，返回了带 `K-002` 来源的回答；截图见图7。API Key 仅在本地环境变量中使用，没有写入代码、证据 JSON 或仓库。
 
 ## 二、代码、入口与运行方式
 
@@ -84,17 +85,39 @@ $env:LLM_ENDPOINT = "https://api.openai.com/v1"
 
 本次代码审查重点是：是否把 API Key 写入仓库、是否无资料仍然生成引用、是否把检索相关误写成事实正确、是否混淆离线演示模型和云端模型。人工测试使用自动化用例、固定问题和 JSON 证据交叉检查；代码没有把离线演示标记为真实模型。
 
-## 八、截图与操作记录（待补）
+## 八、截图与操作记录
 
-请按下面的顺序运行并截图，截图中不要出现 API Key：
+本次截图均来自项目根目录的 PyCharm Terminal，截图中没有显示 API Key。每张图对应一次实际运行或测试：
 
-1. **图1：单次 RAG 查询。**运行 `--question "棋局保存在哪里？" --mode offline`，截取终端中问题、Top-k 来源、回答和“证据文件”路径。
-2. **图2：Prompt 修订。**分别运行 `--prompt v1` 和 `--prompt v2`，截取两次回答或 JSON 中 Prompt/回答差异；建议用终端打开两个结果文件后截图。
-3. **图3：固定问题对比。**运行 `--suite --mode offline`，截取6个问题、direct/RAG耗时和 sources 输出。
-4. **图4：失败处理。**运行 `--failure-test`，截取“缺少 LLM_API_KEY”或连接失败提示；不要设置真实密钥后截图。
-5. **图5（如果有 API Key）：云端调用。**按上面的云端命令运行一次，只截取模型名、问题、回答和耗时，遮挡 Key；如果没有 API Key，报告写“云端调用入口已实现，未提供密钥，未执行真实云端调用”，不要伪造结果。
+**图1：离线 RAG 单次查询。** 问题为“棋局保存在哪里？”，检索命中 `K-003`，回答给出 `data/games.json` 和来源编号。
 
-截图文件建议命名为 `docs/evidence/exp5/fig01-query.png` 至 `fig05-cloud.png`，并在最终 PDF 中逐张编号说明。
+![图1 离线 RAG 单次查询](../evidence/exp5/fig01-query-offline-v2.png)
+
+**图2：Prompt V1。** 原版 Prompt 只提供角色和用户问题，返回基本回答和来源信息，但没有资料边界、回答格式和不足处理要求。
+
+![图2 Prompt V1 运行结果](../evidence/exp5/fig02-prompt-v1.png)
+
+**图3：Prompt V2。** 修订版加入只依据资料、资料不足提示、结论加要点和来源标注要求；同一问题仍命中 `K-003`，输出约束更清晰。
+
+![图3 Prompt V2 运行结果](../evidence/exp5/fig03-prompt-v2.png)
+
+**图4：固定问题对比测试。** 共6个独立问题，直接模型组不传资料，RAG 组返回相关来源；资料无答案的 Q5、Q6 显示 `sources=none`。
+
+![图4 直接模型与 RAG 对比](../evidence/exp5/fig04-comparison.png)
+
+**图5：失败处理。** 未设置 `LLM_API_KEY` 时，云端模式返回“缺少 LLM_API_KEY”错误并保存 `failure-cloud.json`，程序没有崩溃。
+
+![图5 云端调用失败处理](../evidence/exp5/fig05-failure.png)
+
+**图6：自动化测试。** `tests/test_exp5_rag.py` 共6项测试全部通过，验证知识库切分、检索排序、来源引用、资料不足、Prompt 修订和对比测试结构。
+
+![图6 实验5自动化测试](../evidence/exp5/fig06-tests.png)
+
+**图7：真实云端调用。** 使用 DeepSeek `deepseek-chat` 成功返回回答，检索命中 `K-002`，耗时约 1181.55 ms，并生成 `query-cloud-v2.json`。截图上方只显示模型和接口配置，不包含 API Key。
+
+![图7 DeepSeek 云端 RAG 调用](../evidence/exp5/fig07-cloud.png)
+
+对应证据文件包括 `query-offline-v1.json`、`query-offline-v2.json`、`query-cloud-v2.json`、`comparison-offline.json` 和 `failure-cloud.json`；控制台文字记录保存在 `docs/evidence/exp5/`。
 
 ## 九、个人软件中的后续使用与局限
 
@@ -108,4 +131,4 @@ RAG 适合继续用于本项目的规则说明、功能帮助、复盘术语解�
 
 ## 十一、仓库证据
 
-实验5文件将提交到：`docs/experiments/exp5-llm-context-rag-v1.md`、`docs/knowledge/`、`app/exp5_rag.py`、`tests/test_exp5_rag.py` 和 `docs/evidence/exp5/`。提交后记录新的 Commit，并与实验4的仓库链接一起填写到 PDF。
+实验5文件已整理到：`docs/experiments/exp5-llm-context-rag-v1.md`、`docs/knowledge/`、`app/exp5_rag.py`、`tests/test_exp5_rag.py` 和 `docs/evidence/exp5/`。本报告 PDF 与实验5代码使用同一提交记录，仓库链接为 <https://github.com/jyan5668-hub/AI-Xiangqi-Assistant>。
